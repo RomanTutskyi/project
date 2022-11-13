@@ -4,6 +4,47 @@ import pickle
 import os
 import re
 
+class AddressBook(UserDict):
+    N = 0
+    cur = 0
+    #all_values = []
+
+    def __init__(self):
+        super().__init__()
+        self.book = []
+        
+    def save_data(self):
+        with open('adress_book.bin', 'wb') as file_in:
+            pickle.dump(self.data, file_in)
+    
+    def unpack_data(self):
+        if os.path.exists('adress_book.bin'):
+            with open('adress_book.bin', 'rb') as file_out:
+                self.data = pickle.load(file_out)
+        else:
+            self.data = {}
+    
+    def find_contact(self, name):
+        return self.data[name]
+    
+    def add_record(self, record:object):
+        self.data[record.name.value] = record
+        
+    def iterator(self, number_of_entries):
+        self.N += number_of_entries
+
+        for name, phone in self.data.items():
+            for value in self.data[name].phones:
+                self.book.append(phone.value)
+                
+    def __next__(self):
+        if self.cur < self.N:
+            self.cur += 1
+            return self.book[self.cur-1]
+        else:
+            raise StopIteration
+
+
 class Field:
     def __init__(self, value):
         self._value = None
@@ -114,3 +155,5 @@ class Record:
     
     def __repr__(self):
         return (' , '.join(repr(phone) for phone in self.phones) + ' : ' + repr(self.birthday) + ' : ' + repr(self.email) )
+
+
