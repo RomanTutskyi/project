@@ -7,7 +7,6 @@ import re
 class AddressBook(UserDict):
     N = 0
     cur = 0
-    #all_values = []
 
     def __init__(self):
         super().__init__()
