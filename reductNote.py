@@ -12,4 +12,7 @@ def change_note(data):
     users_book.data[name.casefold()].change_note(new_text)
     return 'Text changed'
 
-
+def delete_note(data):
+    name, text = data.split(maxsplit=1)
+    users_book.data[name.casefold()].delete_note()
+    return 'Note has been changed'
